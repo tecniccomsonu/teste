@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR"> 
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMSP CHEETO v2</title>
+    <link rel="stylesheet" href="global.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3309205021953742" crossorigin="anonymous"></script>
+    <script src="https://hcaptcha.com/1/api.js" async defer></script> 
+    <script src="script.js" defer></script> 
+</head>
+<body>
+    <h1 class="large-text">CMSP CHEETO v2</h1>
+    
+    <h2>"Tmnc 500 lições novaskk"</h2>
+
+    <div class="centered">
+        <div class="group">
+          <input type="text" id="name" required="required">
+          <label for="RA">RA + digito + UF</label>
+          <div class="bar"></div>
+        </div>
+        <div class="group">
+            <input type="password" id="password" required="required">
+            <label for="RA">Senha</label>
+            <div class="bar"></div>
+        </div>
+
+        <div class="h-captcha" data-sitekey="03b2d394-013a-46fc-a3f2-1b06625e021a" id="hcaptcha"></div>
+
+        <div class="button-group">
+            <input type="button" value="Fazer Licoes Normais" onclick="verifyCaptcha('fazerlicaonormal')">
+            <input type="button" value="Fazer Licoes Atrasadas" onclick="verifyCaptcha('fazerlicaoatrasada')">
+        </div>
+    </div>
+
+    <footer>
+        <p class="medium-text"> halala marcos10pc | OBS: Infelizmente isso não funciona em prova paulista e nem redação :(</p>
+    </footer>
+
+    <script>
+         async function verifyCaptcha(funcName) {
+        const hcaptchaResponse = hcaptcha.getResponse();
+
+        if (hcaptchaResponse.length === 0) {
+            alert('Faz o captcha doidokkk');
+        } else {
+            const name = document.getElementById('name').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('https://cmsp-cheeto-v2.vercel.app/verify-captcha', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        'h-captcha-response': hcaptchaResponse,
+                    }),
+                });
+
+                if (response.ok) {
+                    const key = await response.text(); 
+
+                    if (funcName === 'fazerlicaonormal') {
+                        fazerlicaonormal(name, password, key);
+                    } else if (funcName === 'fazerlicaoatrasada') {
+                        fazerlicaoatrasada(name, password, key);
+                    }
+                } else {
+                    alert('Verificação do captcha falhou');
+                }
+            } catch (error) {
+                console.error('Erro ao verificar o captcha:', error);
+                alert('Erro ao verificar o captcha');
+                console.log(hcaptchaResponse)
+            }
+
+            hcaptcha.reset();
+        }
+    }
+    
+    </script>
+</body>
+</html>
